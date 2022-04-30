@@ -289,7 +289,7 @@ def gen_list_from_profile(profile):
     for i in bds:
         bd_wordlist.append(i)
         for j in bds:
-            if bds.index(i) != bds.index(j):
+            if (bds.index(i) != bds.index(j)):
                 bd_wordlist.append(i + j)
                 for k in bds:
                     if (
@@ -315,7 +315,7 @@ def gen_list_from_profile(profile):
     for i in wbds:
         wbd_wordlist.append(i)
         for j in wbds:
-            if wbds.index(i) != wbds.index(j):
+            if (wbds.index(i) != wbds.index(j)):
                 wbd_wordlist.append(i + j)
                 for k in wbds:
                     if (
@@ -524,11 +524,10 @@ def gen_list_from_profile(profile):
     unique_list = unique_lista + unique_leet
 
     unique_list_finished = []
-    unique_list_finished = [
-        x
-        for x in unique_list
-        if len(x) < CONFIG_DATA.wcto and len(x) > CONFIG_DATA.wcfrom
-    ]
+    for i in unique_list:
+        if (i not in unique_list_finished):
+            if (len(i) >= CONFIG_DATA.wcfrom and len(i) <= CONFIG_DATA.wcto):
+                unique_list_finished.append(i)
 
     print_to_file(profile["name"] + ".txt", unique_list_finished)
 
