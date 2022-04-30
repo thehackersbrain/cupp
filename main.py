@@ -13,9 +13,7 @@ from sys import exit
 from time import sleep
 
 
-__version__ = 'v0.0.1'
-
-# CONFIG = {}
+__version__ = 'v1.2.8'
 
 
 def banner():
@@ -46,6 +44,8 @@ class CONFIG_DATA:
     threshold = 200
     wcfrom = 5
     wcto = 12
+    numfrom = 0
+    numto = 100
 
 
 def parseArgs():
@@ -148,9 +148,14 @@ def interactive():
 
 def make_leet(x):
     """convert string to leet"""
-    for letter, leetletter in CONFIG_DATA.leet:
-        x = x.replace(letter, leetletter)
-    return x
+    leetmsg = ""
+    for i in x:
+        if (i.lower() in CONFIG_DATA.leet):
+            leetletter = CONFIG_DATA.leet[i.lower()]
+            leetmsg = leetmsg + leetletter
+        else:
+            leetmsg = leetmsg + i
+    return leetmsg
 
 
 def concats(seq, start, stop):
@@ -163,20 +168,15 @@ def concats(seq, start, stop):
 def komb(seq, start, special=''):
     for i in seq:
         for j in start:
-            yield str(i) + str(special) + str(j)
+            yield i + special + j
 
 
 def gen_list_from_profile(profile):
     """Generates a wordlist from a given profile"""
-
-    # chars = CONFIG["global"]["chars"]
-    # years = CONFIG["global"]["years"]
-    # numfrom = CONFIG["global"]["numfrom"]
-    # numto = CONFIG["global"]["numto"]
     chars = CONFIG_DATA.chars
-    years = CONFIG_DATA.years
-    numfrom = 0
-    numto = 100
+    years = str(CONFIG_DATA.years)
+    numfrom = CONFIG_DATA.numfrom
+    numto = CONFIG_DATA.numto
 
     profile["spechars"] = []
 
@@ -217,6 +217,7 @@ def gen_list_from_profile(profile):
     kidb_dd = profile["kidb"][:2]
     kidb_mm = profile["kidb"][2:4]
 
+
     # Convert first letters to uppercase...
     nameup = profile["name"].capitalize()
     surnameup = profile["surname"].capitalize()
@@ -231,6 +232,7 @@ def gen_list_from_profile(profile):
     wordsup = []
     wordsup = list(map(str.capitalize, profile["words"]))
     word = profile["words"] + wordsup
+
 
     # reverse a name
     rev_name = profile["name"][::-1]
@@ -272,8 +274,6 @@ def gen_list_from_profile(profile):
 
     # Let's do some serious work! This will be a mess of code
     # But... who cares? ;)
-
-    # Birthday combinations
     bds = [
         birthdate_yy,
         birthdate_yyy,
@@ -289,16 +289,17 @@ def gen_list_from_profile(profile):
     for i in bds:
         bd_wordlist.append(i)
         for j in bds:
-            if (bds.index(i) != bds.index(j)):
+            if bds.index(i) != bds.index(j):
                 bd_wordlist.append(i + j)
                 for k in bds:
-                    if (bds.index(i) != bds.index(j)
+                    if (
+                        bds.index(i) != bds.index(j)
                         and bds.index(j) != bds.index(k)
                         and bds.index(i) != bds.index(k)
-                        ):
+                    ):
                         bd_wordlist.append(i + j + k)
 
-    # For wife's Birthdays
+    # For wife's Birthday
     wbds = [
         wifeb_yy,
         wifeb_yyy,
@@ -314,16 +315,17 @@ def gen_list_from_profile(profile):
     for i in wbds:
         wbd_wordlist.append(i)
         for j in wbds:
-            if (wbds.index(i) != wbds.index(j)):
+            if wbds.index(i) != wbds.index(j):
                 wbd_wordlist.append(i + j)
                 for k in wbds:
-                    if (wbds.index(i) != wbds.index(j)
+                    if (
+                        wbds.index(i) != wbds.index(j)
                         and wbds.index(j) != wbds.index(k)
                         and wbds.index(i) != wbds.index(k)
-                        ):
+                    ):
                         wbd_wordlist.append(i + j + k)
 
-    # For wife's Birthdays
+    # and a child...
     kbds = [
         kidb_yy,
         kidb_yyy,
@@ -339,16 +341,18 @@ def gen_list_from_profile(profile):
     for i in kbds:
         kbd_wordlist.append(i)
         for j in kbds:
-            if (kbds.index(i) != kbds.index(j)):
+            if kbds.index(i) != kbds.index(j):
                 kbd_wordlist.append(i + j)
                 for k in kbds:
-                    if (kbds.index(i) != kbds.index(j)
+                    if (
+                        kbds.index(i) != kbds.index(j)
                         and kbds.index(j) != kbds.index(k)
                         and kbds.index(i) != kbds.index(k)
-                        ):
+                    ):
                         kbd_wordlist.append(i + j + k)
 
-    # For string combinations...
+    # For string combinations....
+
     kombinaac = [
         profile["pet"],
         petup,
@@ -387,30 +391,27 @@ def gen_list_from_profile(profile):
     for i in kombina:
         kombinaa.append(i)
         for j in kombina:
-            if (kombina.index(i) != kombina.index(j)
-                    and kombina.index(i.capitalize()) !=
-                    kombina.index(j.capitalize())
-                ):
+            if kombina.index(i) != kombina.index(j) and kombina.index(
+                i.title()
+            ) != kombina.index(j.title()):
                 kombinaa.append(i + j)
 
     kombinaaw = []
     for i in kombinaw:
         kombinaaw.append(i)
         for j in kombinaw:
-            if (kombinaw.index(i) != kombinaw.index(j)
-                    and kombinaw.index(i.capitalize()) !=
-                    kombinaw.index(j.capitalize())
-                ):
+            if kombinaw.index(i) != kombinaw.index(j) and kombinaw.index(
+                i.title()
+            ) != kombinaw.index(j.title()):
                 kombinaaw.append(i + j)
 
     kombinaak = []
     for i in kombinak:
         kombinaak.append(i)
         for j in kombinak:
-            if (kombinak.index(i) != kombinak.index(j)
-                    and kombinak.index(i.capitalize()) !=
-                    kombinak.index(j.capitalize())
-                ):
+            if kombinak.index(i) != kombinak.index(j) and kombinak.index(
+                i.title()
+            ) != kombinak.index(j.title()):
                 kombinaak.append(i + j)
 
     kombi = {}
@@ -434,15 +435,14 @@ def gen_list_from_profile(profile):
     kombi[9] += list(komb(word, wbd_wordlist, "_"))
     kombi[10] = list(komb(word, kbd_wordlist))
     kombi[10] += list(komb(word, kbd_wordlist, "_"))
-    kombi[11] = list(komb(word, kbd_wordlist))
-    kombi[11] += list(komb(word, kbd_wordlist, "_"))
+    kombi[11] = list(komb(word, years))
+    kombi[11] += list(komb(word, years, "_"))
     kombi[12] = [""]
     kombi[13] = [""]
     kombi[14] = [""]
     kombi[15] = [""]
     kombi[16] = [""]
     kombi[21] = [""]
-
     if (profile["randnum"]):
         kombi[12] = list(concats(word, numfrom, numto))
         kombi[13] = list(concats(kombinaa, numfrom, numto))
@@ -450,7 +450,6 @@ def gen_list_from_profile(profile):
         kombi[15] = list(concats(kombinaaw, numfrom, numto))
         kombi[16] = list(concats(kombinaak, numfrom, numto))
         kombi[21] = list(concats(reverse, numfrom, numto))
-
     kombi[17] = list(komb(reverse, years))
     kombi[17] += list(komb(reverse, years, "_"))
     kombi[18] = list(komb(rev_w, wbd_wordlist))
@@ -465,7 +464,6 @@ def gen_list_from_profile(profile):
     komb004 = [""]
     komb005 = [""]
     komb006 = [""]
-
     if (len(profile["spechars"]) > 0):
         komb001 = list(komb(kombinaa, profile["spechars"]))
         komb002 = list(komb(kombinaac, profile["spechars"]))
@@ -485,15 +483,16 @@ def gen_list_from_profile(profile):
     komb_unique03 = list(dict.fromkeys(kombinaaw).keys())
     komb_unique04 = list(dict.fromkeys(kombinaak).keys())
     komb_unique05 = list(dict.fromkeys(word).keys())
-    komb_unique06 = list(dict.fromkeys(komb001).keys())
-    komb_unique07 = list(dict.fromkeys(komb002).keys())
-    komb_unique08 = list(dict.fromkeys(komb003).keys())
-    komb_unique09 = list(dict.fromkeys(komb004).keys())
-    komb_unique010 = list(dict.fromkeys(komb005).keys())
-    komb_unique011 = list(dict.fromkeys(komb006).keys())
+    komb_unique07 = list(dict.fromkeys(komb001).keys())
+    komb_unique08 = list(dict.fromkeys(komb002).keys())
+    komb_unique09 = list(dict.fromkeys(komb003).keys())
+    komb_unique010 = list(dict.fromkeys(komb004).keys())
+    komb_unique011 = list(dict.fromkeys(komb005).keys())
+    komb_unique012 = list(dict.fromkeys(komb006).keys())
 
     uniqlist = (
         bd_wordlist
+        + wbd_wordlist
         + kbd_wordlist
         + reverse
         + komb_unique01
@@ -503,19 +502,18 @@ def gen_list_from_profile(profile):
         + komb_unique05
     )
 
-    for i in range(1, 12):
+    for i in range(1, 21):
         uniqlist += komb_unique[i]
 
     uniqlist += (
-        komb_unique06,
-        komb_unique07,
-        komb_unique08,
-        komb_unique09,
-        komb_unique010,
-        komb_unique011
+        komb_unique07
+        + komb_unique08
+        + komb_unique09
+        + komb_unique010
+        + komb_unique011
+        + komb_unique012
     )
 
-    print(type(uniqlist))
     unique_lista = list(dict.fromkeys(uniqlist).keys())
     unique_leet = []
     if (profile["leetmode"]):
@@ -536,34 +534,31 @@ def gen_list_from_profile(profile):
 
 
 def print_to_file(filename, unique_list_finished):
+    console = Console()
     with open(filename, "w") as fh:
         unique_list_finished.sort()
         fh.write(os.linesep.join(unique_list_finished))
 
     with open(filename, "r") as fh:
-        lines = 0
-        for i in fh:
-            lines =+ 1
-    Console.log("Wordlist ({}) Created and Saved...".format(filename), style="bold green")
+        lines = len(fh.readlines())
+    console.log("Wordlist ({0}) Created and Saved...".format(filename), style="bold green")
     print("[[bold green]+[/bold green]] Wordlist {0} saved with {1} words.".format(filename, str(lines)))
 
-    inspect = Prompt.ask("> Hyperspeed Print?")
+    inspect = Confirm.ask("> Hyperspeed Print?", default=False)
     if (inspect):
         try:
             with open(filename, "r+") as wlist:
-                data = wlist.readlists()
+                data = wlist.readlines()
                 for i in data:
-                    print("[bold yellow][{0}][/bold yellow]".format(i))
+                    print("[bold yellow][{0}][/bold yellow] {1}".format(filename, i))
                     sleep(0000.1)
                     os.system("clear")
         except Exception as e:
-            Console.log("{}".format(e), style="bold red")
+            console.log("{}".format(e), style="bold red")
 
 
 def main():
     """Command-Line Interface for terminal uses"""
-
-    # read_config(os.path.join(os.path.dirname(os.path.realpath(__file__)), "cupp.cfg"))
 
     parser = parseArgs()
     args = parser.parse_args()
