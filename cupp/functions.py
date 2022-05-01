@@ -1,77 +1,11 @@
-#!/usr/bin/env python
-
 from rich import print
-from sys import argv
-import argparse
 from rich.prompt import Prompt
 from rich.console import Console
 from rich.prompt import Confirm
 import os
-import configparser
-import functools
 from sys import exit
 from time import sleep
-
-
-__version__ = 'v1.2.8'
-
-
-def banner():
-    print(" [bold green]_________  ____ _______________________[/bold green]")
-    print(" [bold green]\_   ___ \|    |   \______   \______   \ [/bold green]")
-    print(" [bold green]/    \  \/|    |   /|     ___/|     ___/[/bold green]")
-    print(" [bold green]\     \___|    |  / |    |    |    |    [/bold green]")
-    print(" [bold green] \______  /______/  |____|    |____|    [/bold green]")
-    print(" [bold green]        \/                              [/bold green]")
-    print(" [bold cyan]    Common User Password Profiler[/bold cyan]")
-    print("           [bold green]@thehackersbrain[/bold green]")
-
-
-def version():
-    "Display Version"
-    print("\n [ [bold white]{0}[/bold white] ] : [bold green]{1}[/bold green]\n \
-          \n [[bold green]+[/bold green]] Created by [bold cyan]Gaurav Raj[/bold cyan] - [bold cyan]@thehackersbrain[/bold cyan]\
-          \n [[bold green]+[/bold green]] Portfolio: [bold cyan]https://gauravraj.xyz[/bold cyan]\
-          \n [[bold green]+[/bold green]] Blog:      [bold cyan]https://blog.gauravraj.xyz[/bold cyan]".format(argv[0], __version__))
-
-
-class CONFIG_DATA:
-    years = []
-    for i in range(1990, 2023):
-        years.append(i)
-    chars = ['!','@','#','$','%%','&','*']
-    leet = {"a": "4", "i": "1", "e": "3", "t": "7", "o": "0", "s": "5", "g": "9", "z": "2"}
-    threshold = 200
-    wcfrom = 5
-    wcto = 12
-    numfrom = 0
-    numto = 100
-
-
-def parseArgs():
-    """Create and return a argument parse"""
-    parser = argparse.ArgumentParser(
-        description="Common User Password Profiler")
-    group = parser.add_mutually_exclusive_group(required=False)
-    group.add_argument(
-        "-i",
-        "--interactive",
-        action="store_true",
-        help="Interactive questions for password profiling for a specific target"
-    )
-    group.add_argument(
-        "-v",
-        "--version",
-        action="store_true",
-        help="Show the version information of the Program."
-    )
-    group.add_argument(
-        "-q",
-        "--quite",
-        action="store_true",
-        help="Don't Print the Banner."
-    )
-    return parser
+from cupp.helper import CONFIG_DATA
 
 
 def interactive():
@@ -217,7 +151,6 @@ def gen_list_from_profile(profile):
     kidb_dd = profile["kidb"][:2]
     kidb_mm = profile["kidb"][2:4]
 
-
     # Convert first letters to uppercase...
     nameup = profile["name"].capitalize()
     surnameup = profile["surname"].capitalize()
@@ -232,7 +165,6 @@ def gen_list_from_profile(profile):
     wordsup = []
     wordsup = list(map(str.capitalize, profile["words"]))
     word = profile["words"] + wordsup
-
 
     # reverse a name
     rev_name = profile["name"][::-1]
@@ -540,8 +472,10 @@ def print_to_file(filename, unique_list_finished):
 
     with open(filename, "r") as fh:
         lines = len(fh.readlines())
-    console.log("Wordlist ({0}) Created and Saved...".format(filename), style="bold green")
-    print("[[bold green]+[/bold green]] Wordlist {0} saved with {1} words.".format(filename, str(lines)))
+    console.log("Wordlist ({0}) Created and Saved...".format(
+        filename), style="bold green")
+    print(
+        "[[bold green]+[/bold green]] Wordlist {0} saved with {1} words.".format(filename, str(lines)))
 
     inspect = Confirm.ask("> Hyperspeed Print?", default=False)
     if (inspect):
@@ -549,29 +483,9 @@ def print_to_file(filename, unique_list_finished):
             with open(filename, "r+") as wlist:
                 data = wlist.readlines()
                 for i in data:
-                    print("[bold yellow][{0}][/bold yellow] {1}".format(filename, i))
+                    print(
+                        "[bold yellow][{0}][/bold yellow] {1}".format(filename, i))
                     sleep(0000.1)
                     os.system("clear")
         except Exception as e:
             console.log("{}".format(e), style="bold red")
-
-
-def main():
-    """Command-Line Interface for terminal uses"""
-
-    parser = parseArgs()
-    args = parser.parse_args()
-
-    if (not args.quite):
-        banner()
-
-    if (args.version):
-        version()
-    elif (args.interactive):
-        interactive()
-    else:
-        parser.print_help()
-
-
-if __name__ == "__main__":
-    main()
