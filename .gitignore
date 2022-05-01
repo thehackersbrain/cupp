@@ -11,7 +11,6 @@ cupp.py
 .Python
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -130,4 +129,3 @@ dmypy.json
 .pyre/
 test/
 tests/
-*.txt
