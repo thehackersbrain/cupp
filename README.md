@@ -7,7 +7,7 @@
 **CUPP** (Common User Password Profile) is a tool to generate target specific wordlists based on their details provided.
 
 ## Version
-**Cupp v1.3.1
+**Cupp v1.3.2
 
 ## Installation
 
@@ -55,6 +55,7 @@
 
 ## Screenshots
 ![](https://raw.githubusercontent.com/thehackersbrain/cupp/main/screenshots/Pasted image 20220501112100.png)
+
 ![](https://raw.githubusercontent.com/thehackersbrain/cupp/main/screenshots/Pasted image 20220501113616.png)
 ![](https://raw.githubusercontent.com/thehackersbrain/cupp/main/screenshots/demo.gif)
 
