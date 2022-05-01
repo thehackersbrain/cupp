@@ -54,9 +54,9 @@
 
 
 ## Screenshots
-![./screenshots/Pasted image 20220501112100.png]
-![./screenshots/Pasted image 20220501113616.png]
-![./screenshots/demo.gif]
+![screenshots/Pasted image 20220501112100.png]
+![screenshots/Pasted image 20220501113616.png]
+![screenshots/demo.gif]
 
 ## Credit
 This tool is originally designed by [**Mebus**](https://github.com/Mebus) [here](https://github.com/Mebus/cupp.git). I tried to enhance the **UI** and added some functionality than the previous version and removed some redundant code, basically it's a mess **;)**
